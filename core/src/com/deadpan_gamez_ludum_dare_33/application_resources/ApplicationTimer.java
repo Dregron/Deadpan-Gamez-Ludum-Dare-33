@@ -7,9 +7,8 @@ public class ApplicationTimer {
 	
 	public ApplicationTimer(long targetTime) {
 		this.targetTime = targetTime;
-		this.tickTimer = 1;
-		startTime = System.currentTimeMillis();
-		System.err.println(startTime);
+		this.tickTimer = 0;
+		this.startTime = System.currentTimeMillis();
 	}
 	
 	protected void tick(float delta) {
@@ -32,8 +31,8 @@ public class ApplicationTimer {
 	}
 	
 	public void resetTick() {
-		endTime = (startTime - System.currentTimeMillis());
+		endTime = ((System.currentTimeMillis() - startTime) / 1000) % 60;
 		System.err.println(endTime);
-		tickTimer = 1;
+		tickTimer = 0;
 	}
 }

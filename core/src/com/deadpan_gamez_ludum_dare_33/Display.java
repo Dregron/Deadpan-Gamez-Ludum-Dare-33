@@ -7,8 +7,12 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Logger;
 import com.deadpan_gamez_ludum_dare_33.application_resources.ApplicationResource;
 import com.deadpan_gamez_ludum_dare_33.game.GameScreen;
@@ -20,6 +24,7 @@ public class Display extends Game implements DisplayManager {
 	
 	private List<ApplicationResource> screens = new ArrayList<ApplicationResource>();
 	
+	private AssetManager manager;
 	private FPSLogger fpsLogger;
 	
 	public void sleep(int fps) {
@@ -43,6 +48,9 @@ public class Display extends Game implements DisplayManager {
 		this.screens.add(new GameScreen(ScreenIds.GAME, this));
 		this.screens.add(new MenuScreen(ScreenIds.MENU, this));
 		this.setScreenWithId(ScreenIds.GAME);
+		
+		this.manager = new AssetManager();
+		this.manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 		
 		this.fpsLogger = new FPSLogger();
 	}
@@ -80,7 +88,7 @@ public class Display extends Game implements DisplayManager {
 					Gdx.app.debug(GameLogger.DEBUG, "State Changed to: " + applicationResource.getScreenId().name());
 					screenChoice = (Screen) applicationResource;
 				} else {
-					throw new RuntimeException("WTF! Application Resource is not isntance of screen!");
+					throw new RuntimeException("Application Resource is not isntance of screen!");
 				}
 			}
 		}
