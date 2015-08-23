@@ -3,16 +3,16 @@ package com.deadpan_gamez_ludum_dare_33.application_resources;
 public class ApplicationTimer {
 
 	private float tickTimer, targetTime;
-	private long startTime, endTime;
+	private boolean remove = false;
 	
-	public ApplicationTimer(long targetTime) {
+	public ApplicationTimer(float targetTime) {
 		this.targetTime = targetTime;
 		this.tickTimer = 0;
-		this.startTime = System.currentTimeMillis();
 	}
 	
-	protected void tick(float delta) {
+	public boolean tick(float delta) {
 		tickTimer = tickTimer + (1 * delta);
+		return remove;
 	}
 	
 	public boolean isTimerEventReady() {
@@ -30,9 +30,15 @@ public class ApplicationTimer {
 		return false;
 	}
 	
+	public void setTargetTime(float targetTime) {
+		this.targetTime = targetTime;
+	}
+	
 	public void resetTick() {
-		endTime = ((System.currentTimeMillis() - startTime) / 1000) % 60;
-		System.err.println(endTime);
 		tickTimer = 0;
+	}
+	
+	public void setRemove(boolean remove) {
+		this.remove = remove;
 	}
 }

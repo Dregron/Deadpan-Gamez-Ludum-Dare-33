@@ -3,6 +3,7 @@ package com.deadpan_gamez_ludum_dare_33.application_resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.deadpan_gamez_ludum_dare_33.DisplayManager;
 import com.deadpan_gamez_ludum_dare_33.ScreenIds;
 
@@ -11,15 +12,19 @@ public abstract class ApplicationResource {
 	private ScreenIds screenId;
 	private DisplayManager displayManager;
 	private List<ApplicationTimer> timers = new ArrayList<>();
+	private AssetManager manager;
 	
-	public ApplicationResource(ScreenIds screenId, DisplayManager displayManager) {
+	public ApplicationResource(ScreenIds screenId, DisplayManager displayManager, AssetManager asset) {
 		this.screenId = screenId;
 		this.displayManager = displayManager;
+		this.manager = asset;
 	}
 	
 	public void update(float delta) {
-		for (ApplicationTimer timer : timers) {
-			timer.tick(delta);
+		for (int i = 0; i < timers.size(); i++) {
+			if (timers.get(i).tick(delta)) {
+				timers.remove(i);
+			}
 		}
 	}
 	
@@ -41,5 +46,9 @@ public abstract class ApplicationResource {
 	
 	public void addTimer(ApplicationTimer applicationTimer) {
 		timers.add(applicationTimer);
+	}
+	
+	public AssetManager getManager() {
+		return manager;
 	}
 }
